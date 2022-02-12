@@ -1,0 +1,7 @@
+---
+- name: Install cronie
+  pacman:
+    name: cronie
+    state: present
+    update_cache: true
+  notify: restart cron

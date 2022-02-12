@@ -1,0 +1,60 @@
+---
+- include_tasks: variables.yml
+- include_tasks: asserts.yml
+
+- include_tasks: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+- include_tasks: arch.yml
+  when: ansible_distribution == "Archlinux"
+
+- name: Install script
+  template:
+    src: sslbackup.sh.j2
+    dest: /usr/bin/sslbackup.sh
+    mode: 0740
+    owner: root
+    group: root
+
+- name: Create filter conf dir
+  file:
+    path: "{{ sslbackup_conf_dir }}"
+    state: directory
+    mode: 0740
+    owner: root
+    group: root
+
+- name: Install script
+  template:
+    src: baseconf.conf.j2
+    dest: "{{ sslbackup_conf_dir }}/baseconf.conf"
+    mode: 0740
+    owner: root
+    group: root
+  when: sslbackup_includes is sequence
+
+- name: Copy certificate
+  copy:
+    dest: "{{ sslbackup_cacert }}"
+    src: remote_srv.pem
+    mode: 0740
+    owner: root
+    group: root
+
+- name: Cron diff backup script
+  copy:
+    dest: /etc/cron.d/sslbackup-diff.cron
+    src: sslbackup-diff.cron
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart cron
+
+- name: Cron full backup script
+  copy:
+    dest: /etc/cron.d/sslbackup-full.cron
+    src: sslbackup-full.cron
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart cron
+
