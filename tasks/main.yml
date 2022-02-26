@@ -17,7 +17,7 @@
 
 - name: Create filter conf dir
   file:
-    path: "{{ sslbackup_conf_dir }}"
+    path: "{{ _sslbackup_conf_dir }}"
     state: directory
     mode: 0740
     owner: root
@@ -26,19 +26,11 @@
 - name: Install script
   template:
     src: baseconf.conf.j2
-    dest: "{{ sslbackup_conf_dir }}/baseconf.conf"
+    dest: "{{ _sslbackup_conf_dir }}/baseconf.conf"
     mode: 0740
     owner: root
     group: root
   when: sslbackup_includes is sequence
-
-- name: Copy certificate
-  copy:
-    dest: "{{ sslbackup_cacert }}"
-    src: remote_srv.pem
-    mode: 0740
-    owner: root
-    group: root
 
 - name: Cron diff backup script
   copy:

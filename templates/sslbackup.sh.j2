@@ -55,7 +55,7 @@ HEREDOC
 }
 
 reconfig-filters() {
-    cat {{ sslbackup_conf_dir }}/*.conf > /.rsync-filter
+    cat {{ _sslbackup_conf_dir }}/*.conf > /.rsync-filter
     echo '- *' >> /.rsync-filter
 }
 
