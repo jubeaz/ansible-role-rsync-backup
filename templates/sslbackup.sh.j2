@@ -76,8 +76,8 @@ full () {
     done
 
     params="$sync_base_params $dryrun $verbose"
-    rsync-ssl $params --log-format="FULL $log_format" / $target/full >> $log
-    echo "rsync-ssl $params --log-format=\"$log_format\" / $target/full"
+    /usr/bin/rsync-ssl $params --log-format="FULL $log_format" / $target/full >> $log
+    echo "/usr/bin/rsync-ssl $params --log-format=\"$log_format\" / $target/full"
 }
 
 differential () {
@@ -101,13 +101,13 @@ differential () {
     done
 
     params="$sync_base_params $dryrun $verbose $compare_params"
-    rsync-ssl $params --log-format="DIFF $log_format"  /  $target/$diff_dir >> $log
-    echo "rsync-ssl $params --log-format=\"$log_format\" /  $target/$diff_dir"
+    /usr/bin/rsync-ssl $params --log-format="DIFF $log_format"  /  $target/$diff_dir >> $log
+    echo "/usr/bin/rsync-ssl $params --log-format=\"$log_format\" /  $target/$diff_dir"
 
     # Generate list of deletion
     params="$sync_base_params --dry-run --info=ALL0,DEL"
-    rsync-ssl $params /  $target/full > /tmp/$del_file
-    rsync-ssl -a /tmp/$del_file $target/
+    /usr/bin/rsync-ssl $params /  $target/full > /tmp/$del_file
+    /usr/bin/rsync-ssl -a /tmp/$del_file $target/
 }
 
 list () {
@@ -127,8 +127,8 @@ list () {
     done
 
     params="--list-only --human-readable --stats $verbose $recursive"
-    echo "rsync-ssl  $params $target"
-    rsync-ssl  $params $target
+    echo "/usr/bin/rsync-ssl  $params $target"
+    /usr/bin/rsync-ssl  $params $target
 }
 
 main() {
